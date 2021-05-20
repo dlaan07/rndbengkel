@@ -10,7 +10,7 @@ if ($this->session->flashdata('sukses')) {
     </button>', '</div>';
 }
 ?>
-<a href="<?= base_url('Admin/Debit/tambah') ?>" class="btn btn-sm btn-primary mb-3 elevation-5">Tambah Debit</a>
+<?php print_r($debit); ?>
 <div class="card elevation-5">
     <div class="card-body">
         <!-- Tabel daftar order  -->
@@ -20,7 +20,9 @@ if ($this->session->flashdata('sukses')) {
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>ID</th>
+                        <th>ID Order</th>
+                        <th>ID Pelanggan</th>
+                        <th>Nama Pelanggan</th>
                         <th>Total Debit</th>
                         <th>Status</th>
                         <th>Keterangan</th>
@@ -31,7 +33,9 @@ if ($this->session->flashdata('sukses')) {
                   <?php foreach ($debit as $no => $data): ?>
                     <tr>
                       <td><?php echo $no+1 ?></td>
-                      <td><?php echo str_pad($data['debit_id'], 4, "0", STR_PAD_LEFT); ?></td>
+                      <td><?php echo "00".str_pad($data['order_id'], 4, "0", STR_PAD_LEFT); ?></td>
+                      <td><?php echo "00".str_pad($data['pelanggan_id'], 4, "0", STR_PAD_LEFT); ?></td>
+                      <td><?php echo $data['pelanggan_nama'] ?></td>
                       <td><?php echo $data['debit_bayar'] ?></td>
                       <td><?php echo $data['debit_status'] ?  "<span class='badge badge-primary'>Lunas</span>" :
                                                               "<span class='badge badge-danger'>Belum bayar</span>" ?>
