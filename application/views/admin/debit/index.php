@@ -40,12 +40,12 @@ if ($this->session->flashdata('sukses')) {
                       <td><?php echo $data['debit_status'] ?  "<span class='badge badge-primary'>Lunas</span>" :
                                                               "<span class='badge badge-danger'>Belum bayar</span>" ?>
                       </td>
-                      <td><?php echo $data['debit_catatan'] ?></td>
+                      <td><?php echo $data['debit_keterangan'] ?></td>
                       <td>
                         <?php if ($data['debit_status']): ?>
-                          <a href="<?php echo base_url('Admin/Debit/cetak') ?>" class="btn btn-sm btn-default text-bold">Print</a>
+                          <a href="<?php echo base_url('Admin/Debit/cetak/'.$data['order_id']) ?>" class="btn btn-sm btn-default text-bold">Print</a>
                         <?php else: ?>
-                          <a href="<?php echo base_url('Admin/Debit/pembayaran') ?>" class="btn btn-sm btn-info text-bold">Pembayaran</a>
+                          <a href="<?php echo base_url('Admin/Debit/pembayaran/'.$data['order_id']) ?>" class="btn btn-sm btn-info text-bold">Pembayaran</a>
                         <?php endif; ?>
                       </td>
                     </tr>
