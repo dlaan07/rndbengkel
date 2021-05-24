@@ -11,23 +11,12 @@ $jmlPart = $queryPart->num_rows();
 $invoice = $this->db->query("select * from invoice where invoice_kredit = $kredit_id");
 $noinvoice = $invoice->row_array();
 
-if ($noinvoice['invoice_nomor'] < 10) {
-    $no_invoice = '0000'.$noinvoice['invoice_nomor'];
-} else if ($noinvoice['invoice_nomor'] < 100) {
-    $no_invoice = '000'.$noinvoice['invoice_nomor'];
-}else if ($noinvoice['invoice_nomor'] < 1000) {
-    $no_invoice = '00'.$noinvoice['invoice_nomor'];
-} else if ($noinvoice['invoice_nomor'] < 10000) {
-    $no_invoice = '0'.$noinvoice['invoice_nomor'];
-} else if ($noinvoice['invoice_nomor'] < 100000) {
-    $no_invoice = $noinvoice['invoice_nomor'];
-}
+$no_invoice = str_pad($noinvoice['invoice_nomor'], 5, "0", STR_PAD_LEFT);
 ?>
 <!-- title row -->
 <div class="row">
   <div class="col-12">
     <h2 class="page-header">
-      <!--<i class="fas fa-globe"></i> AdminLTE, Inc.-->
       <small><?= $configurasi['config_namaBengkel'] ?></small>
       <img src="<?= base_url() ?>assets/images/<?= $configurasi['config_icon'] ?>" heigth="85px" width="85px" class="float-right">
     </h2>
@@ -145,11 +134,41 @@ if ($noinvoice['invoice_nomor'] < 10) {
       $cicil += $deb['kredit_bayar'];
     }
   }
-  $sisa = $bill['bill_total'] - $cicil - $bill['bill_dp'];
+  $sisa = $bill['bill_total'] - $cicil;
   ?>
-  <div class="col-5">
-    <p class="lead text-bold">Pembayaran Rp. <?= number_format($deb['kredit_bayar'], 0, "", ".") ?></p>
+  <div class="col-4">
+    <p class="lead text-bold">Tanggal Penagihan <?= $bill['bill_tgl'] ?></p>
 
+    <div class="table-responsive">
+      <table class="table">
+        <tr>
+          <th style="width:50%">Total Harga Parts</th>
+          <td>Rp. <?= number_format($total, 0, "", ".") ?></td>
+        </tr>
+        <tr>
+          <th>Total Harga Jasa</th>
+          <td>Rp. <?= number_format($bill['bill_jasa'], 0, "", ".") ?></td>
+        </tr>
+        <tr>
+          <th>Total Tagihan</th>
+          <td>Rp. <?= number_format($total + $bill['bill_jasa'], 0, "", ".") ?></td>
+        </tr>
+        <tr>
+          <th>Total Sudah Dibayar</th>
+          <td>Rp. <?= number_format($cicil, 0, "", ".") ?></td>
+        </tr>
+
+      </table>
+
+    </div>
+    <!-- /.col -->
+
+  </div>
+  <!-- /.row -->
+
+  <!-- /.col -->
+  <div class="col-8">
+    <p style="visibility: hidden" class="lead text-bold"> <?= $bill['bill_tgl'] ?></p>
     <div class="table-responsive">
       <table class="table">
         <tr>
@@ -164,43 +183,19 @@ if ($noinvoice['invoice_nomor'] < 10) {
           <th>Catatan</th>
           <td><?= $bill['bill_keterangan'] ?></td>
         </tr>
+        <tr>
+          <th style="width:50%"><h1 class="text-bold">Pembayaran</h1></th>
+          <td><h1 class="text-bold">Rp. <?= number_format($deb['kredit_bayar'], 0, "", ".") ?></h1></td>
+        </tr>
       </table>
       <h3 class="text-center" style="background: #42E1AE"><?php if ($sisa == 0) {
                                                             echo "L U N A S";
                                                           } else if ($sisa > 0) {
                                                             echo "BELUM LUNAS";
                                                           } ?></h3>
+
     </div>
   </div>
-
-  <div class="col-1"></div>
-  <!-- /.col -->
-  <div class="col-6">
-    <p class="lead text-bold">Tanggal Penagihan <?= $bill['bill_tgl'] ?></p>
-    <div class="table-responsive">
-      <table class="table">
-        <tr>
-          <th style="width:50%">Total Harga Parts</th>
-          <td>Rp. <?= number_format($total, 0, "", ".") ?></td>
-        </tr>
-        <tr>
-          <th>Total Harga Jasa</th>
-          <td>Rp. <?= number_format($bill['bill_jasa'], 0, "", ".") ?></td>
-        </tr>
-        <tr>
-          <th>Total Penagihan</th>
-          <td>Rp. <?= number_format($total + $bill['bill_jasa'], 0, "", ".") ?></td>
-        </tr>
-        <tr>
-          <th><h4>Total Pembayaran</h4></th>
-          <td><h4>Rp. <?= number_format($cicil, 0, "", ".") ?></h4></td>
-        </tr>
-      </table>
-    </div>
-    <!-- /.col -->
-
-  </div>
-  <!-- /.row -->
 </div>
 <!-- ./wrapper -->
 <script type="text/javascript">

@@ -107,13 +107,13 @@ class Bill extends CI_Controller
             $total = $bayar->row_array();
             $sisa = $total['bill_total'] - $i->post('bayar');
             $validbayar = $i->post('batas');
-            
+
             if ($sisa <= 0) {
                 $status = 2;
             } else if ($sisa > 0) {
                 $status = 3;
             }
-            
+
             if ($i->post('bayar') <= $validbayar) {
                 $bill = array(
                     'bill_id'               => $idbill,
@@ -124,7 +124,7 @@ class Bill extends CI_Controller
                     'bill_status'           => $status
                 );
                 $this->Bill_Model->edit($bill);
-        
+
                 if ($i->post('bayar') > 0) {
                     date_default_timezone_set('Asia/Jakarta');
                     $kredit = array(
@@ -136,11 +136,11 @@ class Bill extends CI_Controller
                     );
                     $this->Kredit_Model->tambah($kredit);
                 }
-        
+
                 $this->session->set_flashdata('sukses', 'Pembayaran berhasil dilakukan');
                 redirect('Admin/Bill');
             } else {
-                $this->session->set_flashdata('sukses', 'Total pembayaran melebihi total penagihan');
+                $this->session->set_flashdata('sukses', 'Total pembayaran melebihi total tagihan');
                 redirect('Admin/Bill');
             }
         }
@@ -243,36 +243,36 @@ class Bill extends CI_Controller
             redirect('Admin/Bill');
         }
     }
-    
+
     public function invoice($order_id, $kredit_id){
         $idbengkel = $this->session->userdata('bengkel');
-       
+
     //   echo $kredit_id;
     //   exit;
         $bill = $this->db->query("select * from bill where bill_order_id = $order_id");
         $noBill = $bill->row_array();
         $id_bill = $noBill['bill_id'];
-       
+
         $newInvoice = $this->db->query("select * from invoice where invoice_bengkel = $idbengkel order by invoice_id desc limit 1");
         $invoice = $newInvoice->row_array();
         $nomor = $invoice['invoice_nomor']+1;
                 // exit;
-        
+
         $kredit = $this->db->query("select * from invoice where invoice_kredit = $kredit_id");
         $noKredit = $kredit->num_rows();
         // echo $noKredit;
         // exit;
-        
+
         // foreach ($noKredit as $data) {
             if($noKredit < 1){
                 if (!empty($invoice['invoice_bengkel'])){
-                $data = array (            
+                $data = array (
                     'invoice_nomor'     => $nomor,
                     'invoice_bill'      => $noBill['bill_id'],
                     'invoice_bengkel'   => $idbengkel,
                     'invoice_kredit'    => $kredit_id
                     );
-                    
+
                     $this->db->insert('invoice', $data);
                 } else {
                     $data = array (
@@ -281,24 +281,24 @@ class Bill extends CI_Controller
                     'invoice_bengkel'   => $idbengkel,
                     'invoice_kredit'    => $kredit_id
                     );
-                    
+
                     $this->db->insert('invoice', $data);
                 }
             }
         // }
-        
-        
+
+
     }
 
     public function cetak($order_id)
-    
+
     {
         $kredit = $this->db->query("select * from kredit join bill on kredit.kredit_bill_id = bill.bill_id where bill_order_id = $order_id order by kredit_id desc limit 1");
         $noKredit = $kredit->row_array();
         $kredit_id = $noKredit['kredit_id'];
         // if ($noKredit['kredit'])
         $this->invoice($order_id, $kredit_id);
-        
+
         $data = array(
             'title'         => 'Print Bill',
             'configurasi'   => $this->Konfigurasi_Model->listing(),
@@ -317,11 +317,11 @@ class Bill extends CI_Controller
     {
         $order_id = $this->input->get('b');
         $kredit_id = $this->input->get('k');
-        
+
         $this->invoice($order_id, $kredit_id);
-        
+
         // $invoicie = $this->db->get('invoice', 'invoice_bengkel');
-        
+
         $data = array(
             'title'         => 'Print Bill',
             'configurasi'   => $this->Konfigurasi_Model->listing(),

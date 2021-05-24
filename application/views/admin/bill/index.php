@@ -25,7 +25,7 @@ if ($this->session->flashdata('sukses')) {
                         <th>ID Order</th>
                         <th>ID Pelanggan</th>
                         <th>Nama</th>
-                        <th>Total Penagihan</th>
+                        <th>Total Tagihan</th>
                         <th>Total Pembayaran</th>
                         <th>Keterangan</th>
                         <th>Status Pembayaran</th>

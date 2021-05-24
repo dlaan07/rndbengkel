@@ -16,18 +16,7 @@ $kreditid = $this->input->get('k');
 $cicilan = $this->db->query("select * from kredit where kredit_bill_id = $bill");
 $cicilke = $cicilan->result_array();
 
-
-if ($noinvoice['invoice_nomor'] < 10) {
-    $no_invoice = '0000'.$noinvoice['invoice_nomor'];
-} else if ($noinvoice['invoice_nomor'] < 100) {
-    $no_invoice = '000'.$noinvoice['invoice_nomor'];
-}else if ($noinvoice['invoice_nomor'] < 1000) {
-    $no_invoice = '00'.$noinvoice['invoice_nomor'];
-} else if ($noinvoice['invoice_nomor'] < 10000) {
-    $no_invoice = '0'.$noinvoice['invoice_nomor'];
-} else if ($noinvoice['invoice_nomor'] < 100000) {
-    $no_invoice = $noinvoice['invoice_nomor'];
-}
+$no_invoice = str_pad($noinvoice['invoice_nomor'], 5, "0", STR_PAD_LEFT);
 
 $bayarke = 0;
 $total_bayar = 0;
@@ -169,10 +158,41 @@ foreach($cicilke as $key){
   $sisa = $kredit['bill_total'] - $kredit['kredit_bayar'];
 
   ?>
-  <div class="col-5">
+  <div class="col-4">
     <!--<p class="lead text-bold">&nbsp</p>-->
 
-    <p class="lead text-bold">Pembayaran Rp. <?= number_format($kredit['kredit_bayar'], 0, "", ".") ?></p>
+    <p class="lead text-bold">Tanggal Penagihan <?= $kredit['bill_tgl'] ?></p>
+    <div class="table-responsive">
+      <table class="table">
+        <tr>
+          <th style="width:50%">Total Harga Parts</th>
+          <td>Rp. <?= number_format($total, 0, "", ".") ?></td>
+        </tr>
+        <tr>
+          <th>Total Harga Jasa</th>
+          <td>Rp. <?= number_format($kredit['bill_jasa'], 0, "", ".") ?></td>
+        </tr>
+        <tr>
+          <th>Total Tagihan</th>
+          <td>Rp. <?= number_format($total + $kredit['bill_jasa'], 0, "", ".") ?></td>
+        </tr>
+        <tr>
+            <th>Total Sudah Dibayar</th>
+            <td>Rp. <?= number_format($total_bayar, 0, "", ".") ?><br>
+                Sisa <?= number_format($total + $kredit['bill_jasa'] - $total_bayar, 0, "", ".") ?>
+            </td>
+        </tr>
+        <!--<tr>-->
+        <!--  <th><h4>Pembayaran</h4></th>-->
+        <!--  <td><h4>Rp. <?= number_format($kredit['kredit_bayar'], 0, "", ".") ?></h4></td>-->
+        <!--</tr>-->
+      </table>
+    </div>
+  </div>
+
+  <div class="col-8">
+
+    <p style="visibility: hidden" class="lead text-bold"> <?= $kredit['bill_tgl'] ?></p>
     <div class="table-responsive">
       <table class="table">
         <tr>
@@ -187,45 +207,18 @@ foreach($cicilke as $key){
           <th>Catatan</th>
           <td><?= $kredit['kredit_catatan'] ?></td>
         </tr>
+        <tr>
+
+          <th><h1 class="text-bold">Pembayaran </h1></th>
+          <td><h1 class="text-bold">Rp. <?= number_format($kredit['kredit_bayar'], 0, "", ".") ?></h1></td>
+        </tr>
       </table>
+
       <h3 class="text-center" style="background: #42E1AE"><?php if ($sisa == 0) {
                                                             echo "L U N A S";
                                                           } else if ($sisa > 0) {
                                                             echo "BELUM LUNAS";
                                                           } ?></h3>
-    </div>
-  </div>
-
-  <div class="col-1"></div>
-  <!-- /.col -->
-  <div class="col-6">
-    <p class="lead text-bold">Tanggal Penagihan <?= $kredit['bill_tgl'] ?></p>
-
-    <div class="table-responsive">
-      <table class="table">
-        <tr>
-          <th style="width:50%">Total Harga Parts</th>
-          <td>Rp. <?= number_format($total, 0, "", ".") ?></td>
-        </tr>
-        <tr>
-          <th>Total Harga Jasa</th>
-          <td>Rp. <?= number_format($kredit['bill_jasa'], 0, "", ".") ?></td>
-        </tr>
-        <tr>
-          <th>Total Penagihan</th>
-          <td>Rp. <?= number_format($total + $kredit['bill_jasa'], 0, "", ".") ?></td>
-        </tr>
-        <tr>
-            <th>Total Pembayaran</th>
-            <td>Rp. <?= number_format($total_bayar, 0, "", ".") ?><br>
-                Sisa <?= number_format($total + $kredit['bill_jasa'] - $total_bayar, 0, "", ".") ?>
-            </td>
-        </tr>
-        <!--<tr>-->
-        <!--  <th><h4>Pembayaran</h4></th>-->
-        <!--  <td><h4>Rp. <?= number_format($kredit['kredit_bayar'], 0, "", ".") ?></h4></td>-->
-        <!--</tr>-->
-      </table>
     </div>
     <!-- /.col -->
   </div>

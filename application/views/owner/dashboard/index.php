@@ -114,7 +114,7 @@ $bengkel = $this->session->userdata('bengkel');
     ?>
     <!--        </h3>-->
 
-    <!--        <p>Total Penagihan</p>-->
+    <!--        <p>Total Tagihan</p>-->
     <!--    </div>-->
     <!--    <div class="icon">-->
     <!--        <i class="ion ion-pie-graph"></i>-->

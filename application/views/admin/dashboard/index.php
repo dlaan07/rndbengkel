@@ -88,7 +88,7 @@ if ($this->session->flashdata('sukses')) {
                     ?>
     <!--            </h3>-->
 
-    <!--            <p>Total Penagihan</p>-->
+    <!--            <p>Total Tagihan</p>-->
     <!--        </div>-->
     <!--        <div class="icon">-->
     <!--            <i class="fas fa-cash-register"></i>-->

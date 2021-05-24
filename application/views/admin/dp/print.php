@@ -3,30 +3,10 @@ $idorder = $order['order_id'];
 $kreditid = $kredit['kredit_id'];
 $queryPart = $this->db->query("SELECT * FROM parts WHERE part_order_id = $idorder");
 $jmlPart = $queryPart->num_rows();
-// echo $jmlPart;
 
-// $invoice = $this->db->query("SELECT * FROM invoice WHERE $idorder ORDER BY invoice_id DESC LIMIT 1");
-// $noinvoice = $invoice->row_array();
-// $kredit_id = $asdasd["kredit_id"];
-// $invoice = $this->db->query("select * from invoice where invoice_kredit = $kredit");
-// $noinvoice = $invoice["kredit_id"];
+
 $invoice = $this->db->query("select * from invoice where invoice_kredit = $kreditid");
 $noinvoice = $invoice->row_array();
-
-/*
-padding nomor invoice
- */
-// if ($noinvoice['invoice_nomor'] < 10) {
-//     $no_invoice = '0000'.$noinvoice['invoice_nomor'];
-// } else if ($noinvoice['invoice_nomor'] < 100) {
-//     $no_invoice = '000'.$noinvoice['invoice_nomor'];
-// }else if ($noinvoice['invoice_nomor'] < 1000) {
-//     $no_invoice = '00'.$noinvoice['invoice_nomor'];
-// } else if ($noinvoice['invoice_nomor'] < 10000) {
-//     $no_invoice = '0'.$noinvoice['invoice_nomor'];
-// } else if ($noinvoice['invoice_nomor'] < 100000) {
-//     $no_invoice = $noinvoice['invoice_nomor'];
-// }
 
 $no_invoice = str_pad($noinvoice['invoice_nomor'], 5, "0", STR_PAD_LEFT);
 ?>
@@ -152,16 +132,9 @@ $no_invoice = str_pad($noinvoice['invoice_nomor'], 5, "0", STR_PAD_LEFT);
   <?php
   $sisa = $total + $order['order_estimasiJasaHarga'] - $kredit['kredit_bayar'];
   ?>
-  <div class="col-5">
-    <div class="mt-5 mb-5">&nbsp</div>
-    <h3 class="text-center mt-5" style="background: #42E1AE">Down Payment</h3>
-  </div>
-
-  <div class="col-1"></div>
-  <!-- /.col -->
-  <div class="col-6">
+  <div class="col-4">
     <p class="lead text-bold">Tanggal DP <?= date('d-m-Y') ?></p>
-
+    <!-- <div class="mt-5 mb-5">&nbsp</div> -->
     <div class="table-responsive">
       <table class="table">
         <tr>
@@ -176,13 +149,38 @@ $no_invoice = str_pad($noinvoice['invoice_nomor'], 5, "0", STR_PAD_LEFT);
           <th>Total Estimasi</th>
           <td>Rp. <?= number_format($total + $order['order_estimasiJasaHarga'], 0, "", ".") ?></td>
         </tr>
+      </table>
+    </div>
+
+  </div>
+
+  <!-- <div class="col-1"></div> -->
+  <!-- /.col -->
+  <div class="col-8">
+    <p style="visibility: hidden" class="lead text-bold">Tanggal DP <?= date('d-m-Y') ?></p>
+
+    <div class="table-responsive">
+      <table class="table">
+        <!-- <tr>
+          <th style="width:50%">Estimasi Harga Parts</th>
+          <td>Rp. <?= number_format($total, 0, "", ".") ?></td>
+        </tr>
         <tr>
-          <th>Down Payment</th>
-          <td>Rp. <?= number_format($kredit['kredit_bayar'], 0, "", ".") ?> <?php if ($sisa >= 0) {
+          <th>Estimasi Harga Jasa</th>
+          <td>Rp. <?= number_format($order['order_estimasiJasaHarga'], 0, "", ".") ?></td>
+        </tr>
+        <tr>
+          <th>Total Estimasi</th>
+          <td>Rp. <?= number_format($total + $order['order_estimasiJasaHarga'], 0, "", ".") ?></td>
+        </tr> -->
+        <tr>
+          <th><h1 class="text-bold">Down Payment</h1></th>
+          <td><h1 class="text-bold">Rp. <?= number_format($kredit['kredit_bayar'], 0, "", ".") ?></h1> <?php if ($sisa >= 0) {
                                                                         echo ' <span class="badge badge-info">Sisa Rp. ' . number_format($sisa, 0, "", ".") . '</span>';
                                                                       } ?></td>
         </tr>
       </table>
+      <h3 class="text-center mt-5" style="background: #42E1AE">Down Payment</h3>
     </div>
     <!-- /.col -->
 
