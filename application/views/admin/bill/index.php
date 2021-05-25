@@ -22,8 +22,8 @@ if ($this->session->flashdata('sukses')) {
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>ID Order</th>
                         <th>ID Pelanggan</th>
+                        <th>ID Order</th>
                         <th>Nama</th>
                         <th>Total Tagihan</th>
                         <th>Total Pembayaran</th>
@@ -82,39 +82,50 @@ if ($this->session->flashdata('sukses')) {
                                 </td>
                                 <td><?= $bill['bill_keterangan'] ?></td>
                                 <td>
+                                  <?php echo $bill['bill_yangDibayar']?>
+                                  <?php echo $bill['bill_dp'] ?>
                                     <?php
                                     $sisa = $bill['bill_total'] - $total - $dp;
-                                    if ($bill['bill_yangDibayar'] == 0) {
+                                    if ($bill['bill_yangDibayar'] == 0 and $bill['bill_dp'] == 0 and $bill['bill_total'] == 0) {
                                         echo "<span class='badge badge-danger'>Belum Bayar</span>";
-                                    } else if ($sisa == 0) {
+                                    }
+                                    else if ($sisa == 0) {
                                         echo "<span class='badge badge-primary'>Lunas</span>";
-                                    } else if ($sisa > 0) {
+                                    }
+                                    else if ($sisa > 0) {
                                         echo "<span class='badge badge-warning'>Sebagian Terbayar</span><br>";
                                         echo "<span class='badge badge-info'>Sisa Rp. " . number_format($sisa, 0, "", ".") . "</span>";
+                                    }
+                                    else if ($sisa < 0) {
+                                      echo "<span class='badge badge-info'>Kembalian</span>";
                                     }
                                     ?>
                                 </td>
                                 <td><?= $bill['bill_qc'] ?></td>
                                 <td class="content-center">
-                                    <a href="<?= base_url('Admin/Bill/penagihan/') . $data['order_id'] ?>" class="btn btn-warning btn-sm text-bold" <?php if ($bill['bill_total'] != "") {
-                                                                                                                                                        echo "
-                                                                                                                                                        hidden";
-                                                                                                                                                    } ?>>
-                                        <!-- <li class="fas fa fa-money-bill-alt"></li> -->PENAGIHAN
-                                    </a>
-                                    <a href="<?= base_url('Admin/Bill/qc/') . $data['order_id'] ?>" class="btn btn-warning btn-sm text-bold" <?php if ($bill['bill_tgl'] == "" or $bill['bill_order_id'] != $data['order_id'] or $bill['bill_qc'] == "Ok" or $bill['bill_qc'] == "Service Ulang") {
-                                                                                                                                                    echo "hidden";
-                                                                                                                                                } ?>>
-                                        <!-- <li class="fas fa fa-file-invoice-dollar"></li> -->TEST DRIVE
-                                    </a>
-                                    <a href="<?= base_url('Admin/Bill/pembayaran/') . $data['order_id'] ?>" class="btn btn-info btn-sm text-bold" <?php if ($sisa == 0 or $bill['bill_order_id'] != $data['order_id']) {
-                                                                                                                                                        echo "hidden";
-                                                                                                                                                    } ?>>
-                                        <!-- <li class="fas fa fa-file-invoice-dollar"></li> -->PEMBAYARAN
-                                    </a>
-                                    <a href="<?= base_url('Admin/Bill/cetak/') . $data['order_id'] ?>" target="_blank" class="btn btn-default" <?php if ($sisa > 0 or $bill['bill_total'] == "") {
-                                                                                                                                                    echo "hidden";
-                                                                                                                                                } ?>><i class="fas fa-print"></i> Print</a>
+                                  <?php echo $sisa?>
+                                  <?php echo $bill['bill_total']?>
+                                  <?php echo $total?>
+                                  <?php echo $dp?>
+                                  <?php if (!$bill['bill_total']): ?>
+                                    <a href="<?= base_url('Admin/Bill/penagihan/') . $data['order_id'] ?>" class="btn btn-warning btn-sm text-bold">PENAGIHAN </a>
+                                  <?php endif; ?>
+
+                                  <?php if (!($bill['bill_tgl'] == "" or $bill['bill_order_id'] != $data['order_id'] or $bill['bill_qc'] == "Ok" or $bill['bill_qc'] == "Service Ulang")): ?>
+                                    <a href="<?= base_url('Admin/Bill/qc/') . $data['order_id'] ?>" class="btn btn-warning btn-sm text-bold">TEST DRIVE</a>
+                                  <?php endif; ?>
+
+                                  <?php if ($sisa > 0 and $bill['bill_order_id'] == $data['order_id']): ?>
+                                    <a href="<?= base_url('Admin/Bill/pembayaran/') . $data['order_id'] ?>" class="btn btn-info btn-sm text-bold">PEMBAYARAN</a>
+                                  <?php endif; ?>
+
+                                  <?php if ($sisa < 0 and $bill['bill_order_id'] == $data['order_id'] and $bill['bill_total'] != ""): ?>
+                                    <a href="<?= base_url('Admin/Bill/pembayaran/') . $data['order_id'] ?>" class="btn btn-info btn-sm text-bold">PENGEMBALIAN</a>
+                                  <?php endif; ?>
+
+                                  <?php if ($sisa == 0 and $bill['bill_total'] != ""): ?>
+                                    <a  href="<?= base_url('Admin/Bill/cetak/') . $data['order_id'] ?>" target="_blank" class="btn btn-default"><i class="fas fa-print"></i> Print</a>
+                                  <?php endif; ?>
                                 </td>
                             </tr>
                     <?php

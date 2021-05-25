@@ -121,10 +121,9 @@
 
 <script type="text/javascript">
 function Angkasaja(evt) {
-var charCode = (evt.which) ? evt.which : event.keyCode
-if (charCode > 31 && (charCode < 48 || charCode > 57))
-return false;
-return true;
+  let charCode = (evt.which) ? evt.which : event.keyCode;
+  // return !(charCode > 31 && (charCode < 48 || charCode > 57));
+  return charCode >= 48 && charCode <= 57 || charCode == 45;
 }
 </script>
 </body>

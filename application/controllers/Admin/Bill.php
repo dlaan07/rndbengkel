@@ -70,6 +70,7 @@ class Bill extends CI_Controller
         }
         // $this->session->set_flashdata('sukses', 'Penagihan berhasil dibuat');
         $this->_sendMail($email, $order_id, $namaBengkel);
+        redirect('Admin/Bill');
     }
 
 
@@ -125,7 +126,7 @@ class Bill extends CI_Controller
                 );
                 $this->Bill_Model->edit($bill);
 
-                if ($i->post('bayar') > 0) {
+                if ($i->post('bayar') != 0) {
                     date_default_timezone_set('Asia/Jakarta');
                     $kredit = array(
                         'kredit_bayar'      => $i->post('bayar'),
