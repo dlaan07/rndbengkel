@@ -140,7 +140,7 @@ $autoload['model'] = array(
     'Part_Model',
     'PurchaseOrder_Model',
     'Bill_Model',
-    'Debit_Model',
+    // 'Debit_Model',
     'Konfigurasi_Model',
     'User_Model',
     'Dashboard_Model',
