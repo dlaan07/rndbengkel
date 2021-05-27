@@ -129,9 +129,9 @@ $no_invoice = str_pad($noinvoice['invoice_nomor'], 5, "0", STR_PAD_LEFT);
 
   <?php
   $cicil = 0;
-  foreach ($kredit as $deb) {
-    if ($deb['kredit_bill_id'] == $bill['bill_id']) {
-      $cicil += $deb['kredit_bayar'];
+  foreach ($kredit as $kredit) {
+    if ($kredit['kredit_bill_id'] == $bill['bill_id']) {
+      $cicil += $kredit['kredit_bayar'];
     }
   }
   $sisa = $bill['bill_total'] - $cicil;
@@ -184,20 +184,18 @@ $no_invoice = str_pad($noinvoice['invoice_nomor'], 5, "0", STR_PAD_LEFT);
           <td><?= $bill['bill_keterangan'] ?></td>
         </tr>
         <tr>
-          <?php print_r($deb['kredit_bill_id'])?>
-          <?php echo $bill['bill_id'] ?>
-          <?php if ($deb['kredit_bayar'] >= 0): ?>
+          <?php if ($kredit['kredit_bayar'] >= 0): ?>
             <th style="width:50%"><h1 class="text-bold">Pembayaran</h1></th>
-            <td><h1 class="text-bold">Rp. <?= number_format($deb['kredit_bayar'], 0, "", ".") ?></h1></td>
+            <td><h1 class="text-bold">Rp. <?= number_format($kredit['kredit_bayar'], 0, "", ".") ?></h1></td>
           <?php else: ?>
             <th style="width:50%"><h1 class="text-bold">Kredit</h1></th>
-            <td><h1 class="text-bold">Rp. <?= number_format($deb['kredit_bayar'], 0, "", ".") ?></h1></td>
+            <td><h1 class="text-bold">Rp. <?= number_format($kredit['kredit_bayar'], 0, "", ".") ?></h1></td>
           <?php endif; ?>
 
         </tr>
       </table>
 
-      <!-- <?php print_r($deb) ?> -->
+      <!-- <?php print_r($kredit) ?> -->
       <h3 class="text-center" style="background: #42E1AE"><?php if ($sisa == 0) {
                                                             echo "L U N A S";
                                                           } else if ($sisa > 0) {

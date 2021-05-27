@@ -82,11 +82,9 @@ if ($this->session->flashdata('sukses')) {
                                 </td>
                                 <td><?= $bill['bill_keterangan'] ?></td>
                                 <td>
-                                  <?php echo $bill['bill_yangDibayar']?>
-                                  <?php echo $bill['bill_dp'] ?>
                                     <?php
                                     $sisa = $bill['bill_total'] - $total - $dp;
-                                    if ($bill['bill_yangDibayar'] == 0 and $bill['bill_dp'] == 0 and $bill['bill_total'] == 0) {
+                                    if ($bill['bill_yangDibayar'] == 0 and $bill['bill_total'] === NULL) {
                                         echo "<span class='badge badge-danger'>Belum Bayar</span>";
                                     }
                                     else if ($sisa == 0) {
@@ -103,10 +101,6 @@ if ($this->session->flashdata('sukses')) {
                                 </td>
                                 <td><?= $bill['bill_qc'] ?></td>
                                 <td class="content-center">
-                                  <?php echo $sisa?>
-                                  <?php echo $bill['bill_total']?>
-                                  <?php echo $total?>
-                                  <?php echo $dp?>
                                   <?php if (!$bill['bill_total']): ?>
                                     <a href="<?= base_url('Admin/Bill/penagihan/') . $data['order_id'] ?>" class="btn btn-warning btn-sm text-bold">PENAGIHAN </a>
                                   <?php endif; ?>

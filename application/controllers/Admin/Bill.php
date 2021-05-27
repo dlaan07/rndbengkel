@@ -294,10 +294,9 @@ class Bill extends CI_Controller
     public function cetak($order_id)
 
     {
-        $kredit = $this->db->query("select * from kredit join bill on kredit.kredit_bill_id = bill.bill_id where bill_order_id = $order_id order by kredit_id desc limit 1");
+        $kredit = $this->db->query("select * from kredit join bill on kredit.kredit_bill_id = bill.bill_id where bill_order_id = $order_id order by kredit_id");
         $noKredit = $kredit->row_array();
         $kredit_id = $noKredit['kredit_id'];
-        // if ($noKredit['kredit'])
         $this->invoice($order_id, $kredit_id);
 
         $data = array(
@@ -306,7 +305,7 @@ class Bill extends CI_Controller
             'order'         => $this->Order_Model->getbyId($order_id),
             'part'          => $this->Part_Model->getbyId($order_id),
             'bill'          => $this->Bill_Model->getbyId($order_id),
-            'kredit'        => $this->Kredit_Model->listing(),
+            'kredit'        => $kredit->result_array(),
             'kredit_id'     => $kredit_id,
             'isi'           => 'admin/bill/print'
         );
