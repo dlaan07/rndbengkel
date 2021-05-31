@@ -24,9 +24,6 @@ $no_invoice = str_pad($noinvoice['invoice_nomor'], 5, "0", STR_PAD_LEFT);
 <!-- info row -->
 <div class="row invoice-info">
   <div class="col-sm-4 invoice-col">
-    <!-- <h1><?php echo join("\n", $kredit); ?></h1> -->
-    <!-- <h1><?php echo $kreditid; ?></h1> -->
-    <!-- <h1><?php echo print_r($kredit); ?></h1> -->
     From
     <address>
       <strong><?= $nama = $this->session->userdata['nama'] ?></strong><br>
@@ -45,11 +42,7 @@ $no_invoice = str_pad($noinvoice['invoice_nomor'], 5, "0", STR_PAD_LEFT);
     </address>
   </div>
   <div class="col-sm-4 invoice-col">
-    <?php
-    $tglOrder = new Datetime(date($order['order_tgl']));
-    // echo $tglOrder->format('Ymd');
-    ?><br>
-
+    <br>
     <b>Invoice #99-<?= $no_invoice ?></b><br>
     <br>
     <b>Jenis Sepeda :</b> <?= $order['order_jenisSepeda'] ?><br>
@@ -131,8 +124,7 @@ $no_invoice = str_pad($noinvoice['invoice_nomor'], 5, "0", STR_PAD_LEFT);
   $sisa = $total + $order['order_estimasiJasaHarga'] - $kredit['kredit_bayar'];
   ?>
   <div class="col-4">
-    <p class="lead text-bold">Tanggal DP <?= date('d-m-Y') ?></p>
-    <!-- <div class="mt-5 mb-5">&nbsp</div> -->
+    <p class="lead text-bold">Tanggal DP <?= date('d-m-Y', strtotime($kredit['kredit_tgl'])) ?></p>
     <div class="table-responsive">
       <table class="table">
         <tr>
@@ -152,25 +144,11 @@ $no_invoice = str_pad($noinvoice['invoice_nomor'], 5, "0", STR_PAD_LEFT);
 
   </div>
 
-  <!-- <div class="col-1"></div> -->
-  <!-- /.col -->
   <div class="col-8">
     <p style="visibility: hidden" class="lead text-bold">Tanggal DP <?= date('d-m-Y') ?></p>
 
     <div class="table-responsive">
       <table class="table">
-        <!-- <tr>
-          <th style="width:50%">Estimasi Harga Parts</th>
-          <td>Rp. <?= number_format($total, 0, "", ".") ?></td>
-        </tr>
-        <tr>
-          <th>Estimasi Harga Jasa</th>
-          <td>Rp. <?= number_format($order['order_estimasiJasaHarga'], 0, "", ".") ?></td>
-        </tr>
-        <tr>
-          <th>Total Estimasi</th>
-          <td>Rp. <?= number_format($total + $order['order_estimasiJasaHarga'], 0, "", ".") ?></td>
-        </tr> -->
         <tr>
           <th><h1 class="text-bold">Down Payment</h1></th>
           <td><h1 class="text-bold">Rp. <?= number_format($kredit['kredit_bayar'], 0, "", ".") ?></h1> <?php if ($sisa >= 0) {

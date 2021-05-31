@@ -64,10 +64,7 @@ foreach($cicilke as $key){
   </div>
   <!-- /.col -->
   <div class="col-sm-4 invoice-col">
-    <?php
-    $tglOrder = new Datetime(date($kredit['order_tgl']));
-    // echo $tglOrder->format('Ymd');
-    ?><br>
+    <br>
     <b>Invoice #0<?= $bayarke ?>-<?= $no_invoice ?></b><br>
     <br>
     <b>Jenis Sepeda :</b> <?= $kredit['order_jenisSepeda'] ?><br>
@@ -161,7 +158,7 @@ foreach($cicilke as $key){
   <div class="col-4">
     <!--<p class="lead text-bold">&nbsp</p>-->
 
-    <p class="lead text-bold">Tanggal Penagihan <?= $kredit['bill_tgl'] ?></p>
+    <p class="lead text-bold">Tanggal Penagihan <?= date('d-m-Y', strtotime($kredit['bill_tgl'])) ?></p>
     <div class="table-responsive">
       <table class="table">
         <tr>
