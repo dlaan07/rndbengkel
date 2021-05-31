@@ -221,15 +221,18 @@ $jmlPart = $queryPart->num_rows();
                             <?php
                             }
                             ?>
+
+                            <?php $billDp = $bill['bill_dp'] ? $bill['bill_dp'] : 0 ?>
+
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Tanggal Pembayaran</label>
                                 <input type="date" class="form-control" name="tgl" value="<?= date('Y-m-d') ?>" readonly>
                             </div>
                             <div class="form-group">
-                                <label for="exampleInputEmail1">Jumlah yang Dibayarkan <small class="text-info"> (Kurang <?= number_format($bill['bill_total'] - $cicil - $bill['bill_dp'], 0, "", ".") ?>) </small> </label>
+                                <label for="exampleInputEmail1">Jumlah yang Dibayarkan <small class="text-info"> (Kurang <?= number_format($bill['bill_total'] - $cicil - $billDp, 0, "", ".") ?>) </small> </label>
                                 <input type="text" class="form-control" name="bayar" placeholder="Jumlah yang dibayarkan" value="<?= $bill['bill_yangDibayar'] ?>" maxlength="12" onkeypress="return Angkasaja(event)">
                             </div>
-                            <input type="text" value="<?= $bill['bill_total'] - $cicil - $bill['bill_dp'] ?>" name="batas" hidden>
+                            <input type="text" value="<?= $bill['bill_total'] - $cicil - $billDp ?>" name="batas" hidden>
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Metode Pembayaran</label>
                                 <div class="form-check">
