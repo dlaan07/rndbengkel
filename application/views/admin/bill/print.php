@@ -7,8 +7,12 @@ $idorder = $order['order_id'];
 $queryPart = $this->db->query("SELECT * FROM parts WHERE part_order_id = $idorder");
 $jmlPart = $queryPart->num_rows();
 // echo $jmlPart;
+$kreditTerakhir = $kredit[0]['kredit_bayar'];
 
-$invoice = $this->db->query("select * from invoice where invoice_kredit = $kredit_id");
+$invoice = $this->db->query(
+  "SELECT * FROM invoice
+  WHERE invoice_kredit = $kredit_id
+  ");
 $noinvoice = $invoice->row_array();
 
 $no_invoice = str_pad($noinvoice['invoice_nomor'], 5, "0", STR_PAD_LEFT);
@@ -128,12 +132,7 @@ $no_invoice = str_pad($noinvoice['invoice_nomor'], 5, "0", STR_PAD_LEFT);
   <!-- accepted payments column -->
 
   <?php
-  $cicil = 0;
-  foreach ($kredit as $kredit) {
-    if ($kredit['kredit_bill_id'] == $bill['bill_id']) {
-      $cicil += $kredit['kredit_bayar'];
-    }
-  }
+  $cicil = array_sum(array_column($kredit, 'kredit_bayar'));
   $sisa = $bill['bill_total'] - $cicil;
   ?>
   <div class="col-4">
@@ -184,23 +183,23 @@ $no_invoice = str_pad($noinvoice['invoice_nomor'], 5, "0", STR_PAD_LEFT);
           <td><?= $bill['bill_keterangan'] ?></td>
         </tr>
         <tr>
-          <?php if ($kredit['kredit_bayar'] >= 0): ?>
+          <?php if ($kreditTerakhir >= 0): ?>
             <th style="width:50%"><h1 class="text-bold">Pembayaran</h1></th>
-            <td><h1 class="text-bold">Rp. <?= number_format($kredit['kredit_bayar'], 0, "", ".") ?></h1></td>
+            <td><h1 class="text-bold">Rp. <?= number_format($kreditTerakhir, 0, "", ".") ?></h1></td>
           <?php else: ?>
             <th style="width:50%"><h1 class="text-bold">Kredit</h1></th>
-            <td><h1 class="text-bold">Rp. <?= number_format($kredit['kredit_bayar'], 0, "", ".") ?></h1></td>
+            <td><h1 class="text-bold">Rp. <?= number_format($kreditTerakhir, 0, "", ".") ?></h1></td>
           <?php endif; ?>
 
         </tr>
       </table>
 
       <!-- <?php print_r($kredit) ?> -->
-      <h3 class="text-center" style="background: #42E1AE"><?php if ($sisa == 0) {
-                                                            echo "L U N A S";
-                                                          } else if ($sisa > 0) {
-                                                            echo "BELUM LUNAS";
-                                                          } ?></h3>
+      <h3 class="text-center" style="background: #42E1AE">
+        <?php
+          echo $sisa == 0 ? "L U N A S" : "BELUM LUNAS";
+        ?>
+      </h3>
 
     </div>
   </div>

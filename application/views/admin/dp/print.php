@@ -35,7 +35,6 @@ $no_invoice = str_pad($noinvoice['invoice_nomor'], 5, "0", STR_PAD_LEFT);
       <?= $configurasi['config_telp'] ?>
     </address>
   </div>
-  <!-- /.col
   <div class="col-sm-4 invoice-col">
     To
     <address>
@@ -45,7 +44,6 @@ $no_invoice = str_pad($noinvoice['invoice_nomor'], 5, "0", STR_PAD_LEFT);
       <?= $order['pelanggan_email'] ?>
     </address>
   </div>
-  <!-- /.col -->
   <div class="col-sm-4 invoice-col">
     <?php
     $tglOrder = new Datetime(date($order['order_tgl']));
