@@ -50,10 +50,7 @@ $no_invoice = str_pad($noinvoice['invoice_nomor'], 5, "0", STR_PAD_LEFT);
   </div>
   <!-- /.col -->
   <div class="col-sm-4 invoice-col">
-    <?php
-    $tglOrder = new Datetime(date($order['order_tgl']));
-    // echo $tglOrder->format('Ymd');
-    ?><br>
+    <br>
     <b>Invoice #00-<?= $no_invoice?></b><br>
     <br>
     <b>Jenis Sepeda :</b> <?= $order['order_jenisSepeda'] ?><br>
@@ -136,7 +133,7 @@ $no_invoice = str_pad($noinvoice['invoice_nomor'], 5, "0", STR_PAD_LEFT);
   $sisa = $bill['bill_total'] - $cicil;
   ?>
   <div class="col-4">
-    <p class="lead text-bold">Tanggal Penagihan <?= $bill['bill_tgl'] ?></p>
+    <p class="lead text-bold">Tanggal Penagihan <?= date('d-m-Y', strtotime($bill['bill_tgl'])) ?></p>
 
     <div class="table-responsive">
       <table class="table">
