@@ -7,6 +7,7 @@ $idorder = $order['order_id'];
 $queryPart = $this->db->query("SELECT * FROM parts WHERE part_order_id = $idorder");
 $jmlPart = $queryPart->num_rows();
 // echo $jmlPart;
+$billDp = $bill['bill_dp'] ? $bill['bill_dp'] : 0
 ?>
 
 <div class="row">
@@ -171,7 +172,7 @@ $jmlPart = $queryPart->num_rows();
                             <?php if($bill['bill_dp'] != "") { ?>
                             <div class="form-group">
                                 <label for="exampleInputEmail1">DP</label>
-                                <input type="text" class="form-control" value="<?= number_format($bill['bill_dp'], 0, "", ".") ?>" readonly>
+                                <input type="text" class="form-control" value="<?= number_format($billDp, 0, "", ".") ?>" readonly>
                             </div>
                             <?php } ?>
                             <?php
@@ -213,7 +214,7 @@ $jmlPart = $queryPart->num_rows();
                                         }
                                         ?>
                                         <tr>
-                                            <td colspan="3" class="text-bold text-center">Total Bayar Rp. <?= number_format($cicil + $bill['bill_dp'], 0, "", ".") ?></td>
+                                            <td colspan="3" class="text-bold text-center">Total Bayar Rp. <?= number_format($cicil + $billDp, 0, "", ".") ?></td>
                                         </tr>
                                     </table>
                                     <hr>
@@ -222,7 +223,7 @@ $jmlPart = $queryPart->num_rows();
                             }
                             ?>
 
-                            <?php $billDp = $bill['bill_dp'] ? $bill['bill_dp'] : 0 ?>
+
 
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Tanggal Pembayaran</label>
