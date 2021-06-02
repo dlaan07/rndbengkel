@@ -61,6 +61,12 @@ class Dp extends CI_Controller
                     'kredit_bill_id'    => $idbill,
                 );
                 $this->Kredit_Model->tambah($kredit);
+
+                $kredit_id = $this->db->query(
+                  "SELECT kredit_id FROM kredit
+                  ORDER BY kredit_id DESC LIMIT 1")->row_array();
+
+                $this->invoice($i->post('pelanggan'), $kredit_id['kredit_id']);
             }
 
             $this->session->set_flashdata('sukses', 'DP berhasil di simpan');
@@ -111,7 +117,7 @@ class Dp extends CI_Controller
         // echo $kredit_id;
         // exit;
 
-        $this->invoice($order_id, $kredit_id);
+        // $this->invoice($order_id, $kredit_id);
 
         $bill = $this->db->query("select * from bill where bill_id = $order_id");
         $order = $bill->row_array();

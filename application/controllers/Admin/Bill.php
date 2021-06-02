@@ -96,7 +96,6 @@ class Bill extends CI_Controller
         $valid = $this->form_validation;
         $valid->set_rules('bayar', 'Jumlah yang Dibayarkan', 'required');
         $valid->set_rules('metode', 'Metode Pembayaran', 'required');
-        // $valid->set_rules('ket', 'Keterangan', 'required');
 
         if ($valid->run() === FALSE) {
             redirect(base_url('Admin/Bill'));
@@ -136,6 +135,17 @@ class Bill extends CI_Controller
                         'kredit_bill_id'    => $idbill,
                     );
                     $this->Kredit_Model->tambah($kredit);
+
+                    $kredit_id = $this->db->query(
+                      "SELECT kredit_id FROM kredit
+                      ORDER BY kredit_id DESC LIMIT 1")->row_array();
+
+                    $bill_order_id = $this->db->query(
+                      "SELECT bill_order_id FROM bill
+                      WHERE bill_id = $idbill
+                      ORDER BY bill_order_id DESC LIMIT 1")->row_array();
+
+                    $this->invoice($bill_order_id['bill_order_id'], $kredit_id['kredit_id']);
                 }
 
                 $this->session->set_flashdata('sukses', 'Pembayaran berhasil dilakukan');
@@ -304,7 +314,7 @@ class Bill extends CI_Controller
 
         $noKredit = $kredit->row_array();
         $kredit_id = $noKredit['kredit_id'];
-        $this->invoice($order_id, $kredit_id);
+        // $this->invoice($order_id, $kredit_id);
 
         $data = array(
             'title'         => 'Print Bill',
@@ -325,7 +335,7 @@ class Bill extends CI_Controller
         $order_id = $this->input->get('b');
         $kredit_id = $this->input->get('k');
 
-        $this->invoice($order_id, $kredit_id);
+        // $this->invoice($order_id, $kredit_id);
 
         // $invoicie = $this->db->get('invoice', 'invoice_bengkel');
 

@@ -1,0 +1,8 @@
+-- CEK PENOMORAN INVOICE
+SELECT * FROM invoice
+JOIN kredit ON invoice.invoice_kredit = kredit.kredit_id
+WHERE invoice_bengkel = 7
+ORDER BY invoice_id DESC
+
+-- SELECT bill_id, bill_order_id FROM bill
+-- ORDER BY bill_id DESC
