@@ -83,20 +83,28 @@ if ($this->session->flashdata('sukses')) {
                                 <td><?= $bill['bill_keterangan'] ?></td>
                                 <td>
                                     <?php
+
                                     $sisa = $bill['bill_total'] - $total - $dp;
-                                    if ($bill['bill_yangDibayar'] == 0 and $bill['bill_total'] === NULL) {
-                                        echo "<span class='badge badge-danger'>Belum Bayar</span>";
+                                    
+                                    if (!$bill['bill_total']) {
+                                      echo "<span class='badge badge-danger'>Belum Ditagih</span>";
                                     }
-                                    else if ($sisa == 0) {
-                                        echo "<span class='badge badge-primary'>Lunas</span>";
+                                    else {
+                                      if ($total == 0 and $dp == 0) {
+                                          echo "<span class='badge badge-danger'>Belum Bayar</span>";
+                                      }
+                                      else if ($sisa == 0) {
+                                          echo "<span class='badge badge-primary'>Lunas</span>";
+                                      }
+                                      else if ($sisa > 0) {
+                                          echo "<span class='badge badge-warning'>Sebagian Terbayar</span><br>";
+                                          echo "<span class='badge badge-info'>Sisa Rp. " . number_format($sisa, 0, "", ".") . "</span>";
+                                      }
+                                      else if ($sisa < 0) {
+                                        echo "<span class='badge badge-info'>Kembalian</span>";
+                                      }
                                     }
-                                    else if ($sisa > 0) {
-                                        echo "<span class='badge badge-warning'>Sebagian Terbayar</span><br>";
-                                        echo "<span class='badge badge-info'>Sisa Rp. " . number_format($sisa, 0, "", ".") . "</span>";
-                                    }
-                                    else if ($sisa < 0) {
-                                      echo "<span class='badge badge-info'>Kembalian</span>";
-                                    }
+
                                     ?>
                                 </td>
                                 <td><?= $bill['bill_qc'] ?></td>
